@@ -29,6 +29,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,7 +60,7 @@ public class ReservationServiceApplication {
 
 @Slf4j
 @RestController
-@RequestMapping("/reservations")
+@RequestMapping("/custom-reservations")
 class ReservationController {
 
 	final ReservationRepository reservations;
@@ -101,10 +103,13 @@ class ReservationController {
 	}
 }
 
+@RepositoryRestResource
 interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
+	@RestResource(path = "by-name", rel = "find-by-name")
 	Reservation findByName(@Param("name") String name);
 
+	@RestResource(exported = false)
 	@Override
 	void delete(Long id);
 }
