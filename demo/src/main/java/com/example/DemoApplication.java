@@ -19,6 +19,6 @@ class Hello {
 
 	@RequestMapping("/hello/{name}")
 	String hello(@PathVariable("name") String name) {
-		return "Say hello " + name;
+		return "Say my name hello " + name;
 	}
 }
