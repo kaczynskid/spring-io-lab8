@@ -1,0 +1,16 @@
+server:
+  port: 8765
+
+spring:
+  application:
+    name: registryservice
+  cloud:
+    config:
+      uri: http://localhost:8889
+
+eureka:
+  instance:
+    hostname: ${eureka.host:localhost}
+  client:
+    service-url:
+      defaultZone: ${eureka.peer:http://localhost:${server.port}/eureka/}
