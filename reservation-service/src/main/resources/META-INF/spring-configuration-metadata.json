@@ -1,0 +1,10 @@
+{
+  "groups": [
+    {
+      "name": "reservation.names",
+      "type": "java.lang.String",
+      "description": "List of reservations names",
+      "sourceType": "com.example.ReservationsConfig"
+    }
+  ]
+}

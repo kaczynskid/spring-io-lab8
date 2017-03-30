@@ -1,6 +1,7 @@
 package com.example;
 
 import static java.lang.String.format;
+import static java.lang.System.currentTimeMillis;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.*;
@@ -15,6 +16,7 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +27,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.actuate.info.InfoContributor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -59,7 +64,7 @@ public class ReservationServiceApplication {
 }
 
 @Configuration
-class DbInitConf {
+class ReservationsExtras {
 
 	@Bean
 	public ApplicationRunner init(ReservationsConfig config, ReservationRepository reservations) {
@@ -67,6 +72,21 @@ class DbInitConf {
 				.stream(config.getNames().split(","))
 				.map(Reservation::new)
 				.forEach(reservations::save);
+	}
+
+	private final Random rng = new Random();
+
+	@Bean
+	public HealthIndicator reservationsHealthIndicator() {
+		return () -> (rng.nextBoolean() ? Health.up() : Health.down())
+				.withDetail("spring", "boot")
+				.build();
+	}
+
+	@Bean
+	public InfoContributor reservationsInfoContributor() {
+		return builder -> builder
+				.withDetail("currentTime", currentTimeMillis()).build();
 	}
 }
 
@@ -160,9 +180,3 @@ class Reservation {
 	}
 }
 
-@Data
-@ConfigurationProperties("reservation")
-class ReservationsConfig {
-
-	String names;
-}
