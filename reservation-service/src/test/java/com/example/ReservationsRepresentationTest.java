@@ -19,5 +19,18 @@ public class ReservationsRepresentationTest {
 
     @Test
     public void should_serialize_reservation() throws Exception {
+        // given
+        Reservation reservation = new Reservation("John");
+        Resource<Reservation> resource = new Resource<>(reservation);
+        resource = new ReservationResourceProcessor().process(resource);
+
+        // when
+        JsonContent<Resource<Reservation>> result = json.write(resource);
+
+        // then
+        assertThat(result).extractingJsonPathStringValue("@.name")
+            .isEqualTo("John");
+        assertThat(result).extractingJsonPathStringValue("@.links[0].href")
+            .isEqualTo("https://www.google.pl/search?tbm=isch&q=John");
     }
 }

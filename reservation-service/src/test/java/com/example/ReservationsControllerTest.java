@@ -22,9 +22,29 @@ public class ReservationsControllerTest {
 
     @Test
     public void should_not_get_not_existing_reservation() throws Exception {
+        // when: MockMvcRequestBuilders...
+        mvc.perform(get("/custom-reservations/Krzysiek"))
+            // MockMvcResultHandlers...
+            .andDo(print())
+
+        // then: MockMvcResultMatchers...
+            .andExpect(status().isNotFound());
     }
 
     @Test
     public void should_get_existing_reservation() throws Exception {
+        // given: Mockito...
+        when(reservations.findByName("Krzysiek"))
+            .thenReturn(new Reservation(5L, "Krzysiek"));
+
+        // when: MockMvcRequestBuilders...
+        mvc.perform(get("/custom-reservations/Krzysiek"))
+            // MockMvcResultHandlers...
+            .andDo(print())
+
+        // then: MockMvcResultMatchers...
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("@.id").value("5"))
+            .andExpect(jsonPath("@.name").value("Krzysiek"));
     }
 }
