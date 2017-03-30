@@ -1,0 +1,12 @@
+info:
+  myStaticInfo: whatever
+  artifactid: @project.artifactId@
+  version: @project.version@
+
+spring:
+  application:
+    name: reservationservice
+  cloud:
+    config:
+      uri: http://localhost:8889
+      fail-fast: true
