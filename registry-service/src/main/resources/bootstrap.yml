@@ -1,3 +1,10 @@
+# /etc/hosts
+# 127.0.11.1	peer1
+# 127.0.12.1	peer2
+#
+# java -jar target/registry-service-0.0.1-SNAPSHOT.jar --server.port=9981 --eureka.host=peer1 --eureka.peer=http://peer2:9982/eureka/
+# java -jar target/registry-service-0.0.1-SNAPSHOT.jar --server.port=9982 --eureka.host=peer2 --eureka.peer=http://peer1:9981/eureka/
+
 server:
   port: 8765
 
