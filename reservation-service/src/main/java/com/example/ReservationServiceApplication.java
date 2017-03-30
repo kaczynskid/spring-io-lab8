@@ -1,5 +1,6 @@
 package com.example;
 
+import static java.lang.String.format;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.*;
@@ -20,6 +21,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,7 +33,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.ResourceProcessor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -100,6 +106,19 @@ class ReservationController {
 	@ResponseStatus(NO_CONTENT)
 	public void delete(@PathVariable("name") String name) {
 		reservations.delete(reservations.findByName(name));
+	}
+}
+
+@Component
+class ReservationResourceProcessor implements ResourceProcessor<Resource<Reservation>> {
+
+	@Override
+	public Resource<Reservation> process(Resource<Reservation> resource) {
+		Reservation reservation = resource.getContent();
+		String url = format("https://www.google.pl/search?tbm=isch&q=%s",
+				reservation.getName());
+		resource.add(new Link(url, "photo"));
+		return resource;
 	}
 }
 
