@@ -16,3 +16,7 @@ management:
   info:
     git:
       mode: full
+
+graphite:
+  host: localhost
+  port: 2003
