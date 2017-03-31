@@ -1,0 +1,21 @@
+server:
+  port: 9888
+
+spring:
+  application:
+    name: verifierservice
+  profiles:
+    active: cloud
+  cloud:
+    config:
+      fail-fast: true
+      discovery:
+        enabled: true
+        serviceId: configservice
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: ${eureka.peer:http://localhost:8765/eureka/}
