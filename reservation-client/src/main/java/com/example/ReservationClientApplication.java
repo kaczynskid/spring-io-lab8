@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -43,6 +44,7 @@ public class ReservationClientApplication {
 	}
 
 	@Bean
+	@ConditionalOnProperty(name = "spring.cloud.discovery.enabled", havingValue = "true", matchIfMissing = true)
 	public ApplicationRunner discoveryClientDemo(DiscoveryClient discovery) {
 		return args -> {
 			try {
@@ -67,6 +69,16 @@ public class ReservationClientApplication {
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
+}
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+class ReservationRequest {
+
+	String name;
+	int age;
+
 }
 
 @FeignClient(name = "reservationservice/reservations", fallback = ReservationsFallback.class)
