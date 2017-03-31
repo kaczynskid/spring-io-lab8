@@ -1,0 +1,24 @@
+info:
+  instanceId: ${spring.application.name}-${random.value}
+  artifactid: @project.artifactId@
+  version: @project.version@
+
+spring:
+  application:
+    name: gatewayservice
+  profiles:
+    active: cloud
+  cloud:
+    config:
+      fail-fast: true
+      discovery:
+        enabled: true
+        serviceId: configservice
+
+eureka:
+  instance:
+    preferIpAddress: true
+    instanceId: ${info.instanceId}
+  client:
+    serviceUrl:
+      defaultZone: ${eureka.peer:http://localhost:8765/eureka/}
