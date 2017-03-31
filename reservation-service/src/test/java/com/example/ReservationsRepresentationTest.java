@@ -29,7 +29,7 @@ public class ReservationsRepresentationTest {
 
         // then
         assertThat(result).extractingJsonPathStringValue("@.name")
-            .isEqualTo("John");
+            .startsWith("John");
         assertThat(result).extractingJsonPathStringValue("@.links[0].href")
             .isEqualTo("https://www.google.pl/search?tbm=isch&q=John");
     }
