@@ -21,3 +21,29 @@ eureka:
   client:
     service-url:
       defaultZone: ${eureka.peer:http://localhost:${server.port}/eureka/}
+
+---
+
+spring:
+  profiles: peer1
+server:
+  port: 9981
+eureka:
+  instance:
+    hostname: peer1
+  client:
+    serviceUrl:
+      defaultZone: http://peer2:9982/eureka/
+
+---
+
+spring:
+  profiles: peer2
+server:
+  port: 9982
+eureka:
+  instance:
+    hostname: peer2
+  client:
+    serviceUrl:
+      defaultZone: http://peer1:9981/eureka/

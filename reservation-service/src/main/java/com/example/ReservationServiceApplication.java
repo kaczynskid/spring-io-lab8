@@ -218,4 +218,3 @@ class Reservation {
 		this.name = name;
 	}
 }
-
