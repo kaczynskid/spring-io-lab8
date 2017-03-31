@@ -11,8 +11,10 @@ spring:
     name: reservationservice
   cloud:
     config:
-      uri: http://localhost:8889
       fail-fast: true
+      discovery:
+        enabled: true
+        serviceId: configservice
 
 eureka:
   instance:
@@ -20,4 +22,4 @@ eureka:
     instanceId: ${info.instanceId}
   client:
     serviceUrl:
-      defaultZone: http://peer1:9981/eureka/
+      defaultZone: ${eureka.peer:http://localhost:8765/eureka/}
