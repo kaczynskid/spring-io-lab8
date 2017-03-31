@@ -23,6 +23,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.health.Health;
@@ -33,6 +35,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
@@ -174,11 +177,14 @@ class ReservationController {
 @Component
 class ReservationResourceProcessor implements ResourceProcessor<Resource<Reservation>> {
 
+	@Value("${info.instanceId}") String instanceId;
+
 	@Override
 	public Resource<Reservation> process(Resource<Reservation> resource) {
 		Reservation reservation = resource.getContent();
 		String url = format("https://www.google.pl/search?tbm=isch&q=%s",
 				reservation.getName());
+		resource.getContent().setName(resource.getContent().getName() + "-" + instanceId);
 		resource.add(new Link(url, "photo"));
 		return resource;
 	}
