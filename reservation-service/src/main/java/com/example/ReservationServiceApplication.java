@@ -190,7 +190,7 @@ class ReservationResourceProcessor implements ResourceProcessor<Resource<Reserva
 	}
 }
 
-@RepositoryRestResource
+@RepositoryRestResource(path = "/reservations")
 interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
 	@RestResource(path = "by-name", rel = "find-by-name")
