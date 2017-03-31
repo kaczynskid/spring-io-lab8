@@ -1,0 +1,21 @@
+server:
+  port: 9898
+
+spring:
+  application:
+    name: dashboardservice
+  profiles:
+    active: cloud
+  cloud:
+    config:
+      fail-fast: true
+      discovery:
+        enabled: true
+        serviceId: configservice
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: ${eureka.peer:http://localhost:8765/eureka/}
