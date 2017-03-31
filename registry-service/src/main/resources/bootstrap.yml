@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: registryservice
+  boot:
+    admin:
+      context-path: /admin
 
 eureka:
   instance:
