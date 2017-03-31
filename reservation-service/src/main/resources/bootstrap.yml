@@ -9,6 +9,8 @@ info:
 spring:
   application:
     name: reservationservice
+  profiles:
+    active: cloud
   cloud:
     config:
       fail-fast: true

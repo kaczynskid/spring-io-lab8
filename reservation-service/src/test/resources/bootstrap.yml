@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: default
+  cloud:
+    config:
+      enabled: false
+
+reservation:
+  names: A,B,C
+
+management:
+  shell:
+    ssh:
+      enabled: false

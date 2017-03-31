@@ -1,7 +1,7 @@
 package com.example;
 
-import static java.lang.String.format;
-import static java.lang.System.currentTimeMillis;
+import static java.lang.String.*;
+import static java.lang.System.*;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.*;
@@ -23,8 +23,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.health.Health;
@@ -32,9 +30,7 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.info.InfoContributor;
 import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Example;
@@ -60,9 +56,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.String;
+
 @SpringBootApplication
 @EnableConfigurationProperties(ReservationsConfig.class)
-@EnableDiscoveryClient
 public class ReservationServiceApplication {
 
 	public static void main(String[] args) {

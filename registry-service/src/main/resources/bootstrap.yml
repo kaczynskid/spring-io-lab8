@@ -15,7 +15,6 @@ eureka:
     service-url:
       defaultZone: ${eureka.peer:http://localhost:${server.port}/eureka/}
 
-
 ---
 # /etc/hosts
 # 127.0.11.1	peer1
