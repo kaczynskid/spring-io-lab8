@@ -2,7 +2,9 @@ package com.example;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -21,6 +24,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +35,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
+@EnableCircuitBreaker
 public class ReservationClientApplication {
 
 	public static void main(String[] args) {
@@ -64,11 +69,21 @@ public class ReservationClientApplication {
 	}
 }
 
-@FeignClient("reservationservice/reservations")
+@FeignClient(name = "reservationservice/reservations", fallback = ReservationsFallback.class)
 interface ReservationsClient {
 
 	@GetMapping
 	Resources<Reservation> listReservations();
+}
+
+@Component
+class ReservationsFallback implements ReservationsClient {
+
+	@Override
+	public Resources<Reservation> listReservations() {
+		return new Resources<>(Stream.of("This", "is", "fallback")
+				.map(Reservation::new).collect(toList()));
+	}
 }
 
 @Slf4j

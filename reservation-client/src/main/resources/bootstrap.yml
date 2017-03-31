@@ -22,3 +22,7 @@ eureka:
   client:
     serviceUrl:
       defaultZone: ${eureka.peer:http://localhost:8765/eureka/}
+
+feign:
+  hystrix:
+    enabled: true
